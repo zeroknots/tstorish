@@ -8,8 +8,11 @@ import {TestTstorishContract} from "../../src/test/TestTstorishContract.sol";
 contract TestTstorish is Test {
     TestTstorishContract tstorishcontract;
 
+    address eoa;
+
     function setUp() public {
         _deployTstorishContract();
+        eoa = makeAddr("eoa");
     }
 
     function _deployTstorishContract() private {
@@ -18,12 +21,13 @@ contract TestTstorish is Test {
 
     function test_fail_activateTstore_alreadyActivated() public {
         vm.expectRevert(abi.encodeWithSignature("TStoreAlreadyActivated()"));
-        vm.prank(address(this), address(this));
+        vm.prank(address(eoa), address(eoa));
         tstorishcontract.__activateTstore();
     }
 
     function test_fail_activateTstore_onlyDirectCalls() public {
         vm.expectRevert(abi.encodeWithSignature("OnlyDirectCalls()"));
+        vm.prank(address(this), address(eoa));
         tstorishcontract.__activateTstore();
     }
 

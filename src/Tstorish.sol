@@ -95,7 +95,7 @@ contract Tstorish {
      */
     function __activateTstore() external {
         // Ensure this function is triggered from an externally-owned account.
-        if (msg.sender != tx.origin) {
+        if (msg.sender.code.length != 0) {
             revert OnlyDirectCalls();
         }
 
